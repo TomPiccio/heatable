@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "248226384043",
+    "firebase_url": "https://heatable-df0b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "heatable-df0b1",
+    "storage_bucket": "heatable-df0b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248226384043:android:c8c33b6fad529f7bc5cfee",
+        "android_client_info": {
+          "package_name": "com.example.heatable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248226384043-tv99a0j8vuoku91rtttndhiqd88ebknf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8RKDRysxjWYdyqN7gokr1h_IIJArpgyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248226384043-tv99a0j8vuoku91rtttndhiqd88ebknf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
