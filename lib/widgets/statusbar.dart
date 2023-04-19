@@ -22,6 +22,8 @@ class _StatusBarState extends State<StatusBar> {
   String _SeatNum = "";
   DatabaseReference _database = FirebaseDatabase.instance.ref("");
   int counter = 0;
+  bool _heating = false;
+  bool _warming = false;
 
   @override
   void initState() {
@@ -87,6 +89,19 @@ class _StatusBarState extends State<StatusBar> {
           }
         });
       });
+      _database.child(_SeatNum).child("Heating").onValue.listen((event) {
+        final dynamic val = event.snapshot.value;
+        setState(() {
+          _heating = val;
+        });
+      });
+      _database.child(_SeatNum).child("Warming").onValue.listen((event) {
+        final dynamic val = event.snapshot.value;
+        setState(() {
+          _warming = val;
+        });
+      });
+
       _database.child(_SeatNum).child("Lid_Sensor").onValue.listen((event) {
         final dynamic val = event.snapshot.value;
         setState(() {

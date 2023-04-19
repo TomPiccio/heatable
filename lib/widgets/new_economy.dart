@@ -25,41 +25,56 @@ class _NewEconomyState extends State<NewEconomy> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 1,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 2,
-        ),
-        Expanded(child: Center(child: Text(row_num2))),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 3,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 4,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 5,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 6,
-        ),
-        Expanded(child: Center(child: Text(row_num2))),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 7,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 8,
-        ),
-        NewSeat(
-          SeatNumber: (widget.row_num - 1) * 10 + 9,
-        ),
-      ],
+    return Container(
+      height: 50,
+      child: Row(
+        children: [
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 1,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 2,
+          ),
+          Expanded(
+              child: Center(
+                  child: Text(
+            row_num2,
+            textScaleFactor: 1.5,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ))),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 3,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 4,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 5,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 6,
+          ),
+          Expanded(
+              child: Center(
+                  child: Text(
+            row_num2,
+            textScaleFactor: 1.5,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ))),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 7,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 8,
+          ),
+          NewSeat(
+            SeatNumber: (widget.row_num - 1) * 10 + 9,
+          ),
+        ],
+      ),
     );
   }
 }

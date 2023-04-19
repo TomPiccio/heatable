@@ -65,6 +65,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/logo.png
+    - assets/HeaTable_Logo.png
     - assets/banner.png
     - assets/page-1/images/group.png
     - assets/page-1/images/game-icons-heat-haze.png

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:heatable/widgets/statusbar.dart';
 import 'package:heatable/widgets/seat.dart';
-import 'package:heatable/widgets/new_economy.dart';
+import 'package:heatable/widgets/economy.dart';
 import 'package:heatable/widgets/new_seat.dart';
 import 'package:heatable/widgets/headers.dart';
 
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ListView.builder(
               itemCount: 1,
               itemBuilder: (context, index) {
-                return NewEconomy(row_num: index + 1);
+                return Economy(row_num: index + 1);
               },
             )),
             Container(

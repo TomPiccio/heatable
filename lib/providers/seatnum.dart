@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'dart:math';
 
 class SeatNum with ChangeNotifier {
   String _seatnum = "32A";
@@ -91,6 +92,21 @@ class SeatNum with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Null> Async_Deliver_Food(String seat, bool val) async {
+    if (seat != "UND") {
+      final Map<String, bool> updates = {"FoodDelivered": val};
+      FirebaseDatabase.instance
+          .ref("")
+          .child(seat)
+          .update(updates)
+          .then((_) {})
+          .catchError((error) {
+        _seatnum = "UND";
+      });
+    }
+    notifyListeners();
+  }
+
   Future<Null> Async_Unpair_Seat(String seat) async {
     if (seat != "UND") {
       final Map<String, bool> updates = {"Paired": false};
@@ -106,12 +122,25 @@ class SeatNum with ChangeNotifier {
   }
 
   Future<Null> Async_Seat_Maker(String seat) async {
+    int state_num = Random().nextInt(3);
+    int num = Random().nextInt(8);
+    var foods = [
+      "Chicken Rice",
+      "Nasi Lemak",
+      "Laksa w/ Rice",
+      "Penne Pasta",
+      "Roast Pork",
+      "None",
+      "None",
+      "None",
+    ];
+
     if (seat != "UND") {
-      final Map<String, String> updates = {"Status": "Idle"};
       FirebaseDatabase.instance
           .ref(seat)
           .set({
-            "Status": "Idle",
+            "Status": "Offline",
+            "status": state_num,
             "Food_Sensors": true,
             "Heating": false,
             "Lid_Sensor": false,
@@ -121,12 +150,15 @@ class SeatNum with ChangeNotifier {
             "Warming": false,
             "Heat_time": 0,
             "LastUpdated": 0,
-            "Temperature": -1000
+            "Temperature": -1000.0,
+            "FoodOrdered": foods[num],
+            "FoodDelivered": false,
           })
           .then((_) {})
           .catchError((error) {
             _seatnum = "UND";
           });
+      print(seat);
     }
   }
 }

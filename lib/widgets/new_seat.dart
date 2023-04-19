@@ -6,10 +6,9 @@ import 'package:heatable/main.dart';
 import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heatable/utils.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
-
+import 'package:heatable/seat_page.dart';
 import 'package:provider/provider.dart';
 
 class NewSeat extends StatefulWidget {
@@ -23,18 +22,13 @@ class NewSeat extends StatefulWidget {
 class _NewSeatState extends State<NewSeat> {
   String SN = "UND";
   bool online = false;
+  int old_time = -2;
+  int curr_time = -1;
+  int _state = 0;
   Future loadSeat(String SNum) async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Center(child: CircularProgressIndicator());
-      },
-    );
-
     await context.read<SeatNum>().Async_Change_Seat(SNum);
 
     SN = SNum;
-    Navigator.of(context).pop();
   }
 
   @override
@@ -53,7 +47,7 @@ class _NewSeatState extends State<NewSeat> {
     timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (Cool) {
         setState(() {
-          if (curr_time - old_time > 200) {
+          if (curr_time - old_time > 100) {
             print("Online");
             online = true;
             old_time = curr_time;
@@ -84,16 +78,15 @@ class _NewSeatState extends State<NewSeat> {
     } else {
       context.read<SeatNum>().set_Cool(true);
       Cool = true;
-      _activateListeners();
+      await _activateListeners();
     }
     return snapshot.exists;
   }
 
-  int old_time = -2;
-  int curr_time = -1;
-  void _activateListeners() {
+  Future<void> _activateListeners() async {
     if (Cool) {
       dynamic db = FirebaseDatabase.instance.ref(Decode(widget.SeatNumber));
+      //context.read<SeatNum>().Async_Seat_Maker(Decode(widget.SeatNumber));
       db.child("LastUpdated").onValue.listen((event) {
         final dynamic val = event.snapshot.value;
         setState(() {
@@ -102,13 +95,21 @@ class _NewSeatState extends State<NewSeat> {
           } else {}
         });
       });
+      db.child("status").onValue.listen((event) {
+        final dynamic val = event.snapshot.value;
+        setState(() {
+          if (val >= 0) {
+            _state = val;
+          }
+        });
+      });
     }
   }
 
   String Decode(int sn) {
     int a = (sn ~/ 10) + 1;
     int b = sn % 10;
-    List<String> letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+    List<String> letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'];
     String output = "";
     if (a < 10) {
       output += "0";
@@ -121,9 +122,10 @@ class _NewSeatState extends State<NewSeat> {
   @override
   Widget build(BuildContext context) {
     double baseWidth = 1366;
-    double scalefactor = 0.7;
+    double scalefactor = 0.55;
     double fem = MediaQuery.of(context).size.width * scalefactor / baseWidth;
     double ffem = fem * 0.97;
+
     return Expanded(
       child: Container(
         // eYqv (41:998)
@@ -133,15 +135,16 @@ class _NewSeatState extends State<NewSeat> {
             //print(Cool);
 
             String SNNN = Decode(widget.SeatNumber);
-
-            loadSeat(SNNN);
-            String yup = context.read<SeatNum>().Get_Seat();
-            if (yup == SNNN) {
-              context.read<SeatNum>().Add_Click();
-            } else {
-              context.read<SeatNum>().Reset_Click();
-            }
+            print(SNNN);
             context.read<SeatNum>().Change_Seat(SNNN);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SeatPage(
+                        seatnum: SNNN,
+                      )),
+            );
+            print("Hello2");
           },
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
@@ -152,7 +155,9 @@ class _NewSeatState extends State<NewSeat> {
             decoration: BoxDecoration(
               color: Cool
                   ? online
-                      ? Color(0xff303e55)
+                      ? _state == 3
+                          ? Color(0xffb31a23)
+                          : Color(0xff303e55)
                       : Colors.grey[500]
                   : Color(0xffb31a23),
               borderRadius: BorderRadius.circular(20 * fem),
@@ -176,7 +181,15 @@ class _NewSeatState extends State<NewSeat> {
                   width: 31.67 * fem,
                   height: 28.5 * fem,
                   child: Image.asset(
-                    'assets/page-1/images/solar-danger-triangle-linear-RQ4.png',
+                    online
+                        ? _state == 0
+                            ? 'assets/page-1/images/openmoji-zzz-dzY.png'
+                            : _state == 1
+                                ? 'assets/page-1/images/maki-hot-spring-TE8.png'
+                                : _state == 2
+                                    ? 'assets/page-1/images/game-icons-heat-haze-k3J.png'
+                                    : 'assets/page-1/images/solar-danger-triangle-linear-RQ4.png'
+                        : 'assets/page-1/images/openmoji-zzz-dzY.png',
                     width: 31.67 * fem,
                     height: 28.5 * fem,
                   ),
@@ -187,7 +200,7 @@ class _NewSeatState extends State<NewSeat> {
                   textAlign: TextAlign.right,
                   style: SafeGoogleFont(
                     'Poppins',
-                    fontSize: 32 * ffem,
+                    fontSize: 40 * ffem,
                     fontWeight: FontWeight.w400,
                     height: 1.5 * ffem / fem,
                     color: Color(0xfff7ebda),
